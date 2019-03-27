@@ -1,22 +1,40 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { hot } from 'react-hot-loader';
-import HelloWorld from './components/shared/HelloWorld';
-import Button from './components/shared/Button';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+import Form from './components/shared/Form';
+import Todo from './components/shared/Todo';
 
-  render() {
-    return (
+const App = () => {
+  const [todos, setTodos] = useState([]);
+
+  const addTodo = text => {
+    const newTodos = [...todos, { text }];
+    setTodos(newTodos);
+  };
+
+  const deleteTodo = index => {
+    const newTodos = [...todos];
+    newTodos.splice(index, 1);
+    setTodos(newTodos);
+  };
+
+  return (
+    <div>
+      <h1>Hello Hooks</h1>
+      <Form addTodo={addTodo} />
       <div>
-        <HelloWorld title="Hello World" />
-        <Button name="Button" />
+        {todos.map((todo, index) => (
+          <Todo
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
+            index={index}
+            deleteTodo={deleteTodo}
+            text={todo.text}
+          />
+        ))}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default hot(module)(App);
